@@ -38,3 +38,20 @@ def predecir(red, imagenes):
         probabilidades = torch.softmax(red(x), dim=1)
     seguridad, respuesta = probabilidades.max(1)
     return respuesta.numpy(), seguridad.numpy()
+
+
+def activaciones(red, imagen):
+    x = torch.tensor(np.array(imagen) / 255.0, dtype=torch.float32).reshape(1, 1, 28, 28)
+    with torch.no_grad():
+        c1 = red.agrupar(red.activacion(red.conv1(x)))
+        c2 = red.agrupar(red.activacion(red.conv2(c1)))
+        d1 = red.activacion(red.densa1(red.aplanar(c2)))
+        d2 = red.activacion(red.densa2(d1))
+        s = torch.softmax(red.salida(d2), dim=1)
+    return {
+        "conv1": c1[0].mean(dim=(1, 2)).numpy(),
+        "conv2": c2[0].mean(dim=(1, 2)).numpy(),
+        "densa1": d1[0].numpy(),
+        "densa2": d2[0].numpy(),
+        "salida": s[0].numpy(),
+    }
