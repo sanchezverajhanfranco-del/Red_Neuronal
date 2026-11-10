@@ -1,0 +1,97 @@
+/* Base */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #f3f5f9;
+  color: #1b2430;
+}
+main {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.columna { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+
+/* Laptop o computadora: dos columnas, pizarra a la izquierda */
+@media (min-width: 900px) {
+  main { max-width: 1100px; flex-direction: row; align-items: flex-start; gap: 24px; }
+  .columna { flex: 1; }
+  #panel { height: 360px; }
+}
+h1 { margin: 0; font-size: 1.6rem; text-align: center; }
+h2 { margin: 0 0 8px; font-size: 1.2rem; }
+.ayuda { margin: 0; text-align: center; color: #55606e; font-size: 0.95rem; }
+
+/* Pizarra: cuadrada, blanca, con borde. touch-action evita que la página se mueva al dibujar */
+#pizarra {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #fff;
+  border: 3px solid #1b2430;
+  border-radius: 12px;
+  touch-action: none;
+  display: block;
+}
+
+/* Botones grandes (mínimo 48 px de alto) */
+.fila { display: flex; gap: 12px; }
+button {
+  flex: 1;
+  min-height: 52px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  background: #1769e0;
+  color: #fff;
+  cursor: pointer;
+}
+button.secundario { background: #fff; color: #1b2430; border: 2px solid #1b2430; }
+button.ancho { width: 100%; }
+button:disabled { opacity: 0.6; }
+button:focus-visible { outline: 3px solid #f5b700; outline-offset: 2px; }
+
+/* Botones para elegir números, letras o dibujos */
+.modos { display: flex; gap: 8px; }
+.modos .modo {
+  min-height: 44px; font-size: 1rem;
+  background: #fff; color: #1b2430; border: 2px solid #1769e0;
+}
+.modos .modo.activo { background: #1769e0; color: #fff; }
+
+/* Vista previa de la foto */
+#vistaPrevia { max-width: 140px; border-radius: 8px; align-self: center; }
+
+/* Red en vivo */
+#zonaRed {
+  background: #0b1220;
+  border-radius: 12px;
+  padding: 10px;
+}
+#estadoRed { color: #9fb0cc; text-align: center; font-size: 0.95rem; margin-bottom: 6px; }
+#panel { width: 100%; height: 300px; display: block; }
+
+/* Respuesta */
+#respuesta { text-align: center; min-height: 3rem; }
+.grande { font-size: 4rem; font-weight: 700; line-height: 1.1; word-break: break-word; }
+.detalle { font-size: 1.1rem; margin-top: 4px; }
+.opciones { font-size: 0.85rem; color: #55606e; margin-top: 6px; }
+.texto-hoja {
+  text-align: left; white-space: pre-wrap; background: #fff;
+  border-radius: 8px; padding: 10px; margin-top: 8px;
+}
+.error { color: #b3261e; font-weight: 600; }
+.no-reconocido { color: #b3261e; font-size: 1.4rem; font-weight: 700; }
+
+/* Preguntas frecuentes */
+#zonaPreguntas { background: #fff; border-radius: 12px; padding: 12px; }
+#listaPreguntas { display: flex; flex-direction: column; gap: 8px; }
+#listaPreguntas button {
+  min-height: 44px; font-size: 0.95rem; font-weight: 500; text-align: left;
+  padding: 8px 12px; background: #eef3fb; color: #1b2430; border: 1px solid #c9d6ea;
+}
+#respuestaPregunta { margin-top: 10px; line-height: 1.45; }

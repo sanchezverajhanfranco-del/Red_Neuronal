@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!-- Muestra la página a su tamaño real en el celular -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TecnoForms</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <main>
+    <!-- Columna izquierda: pizarra y botones -->
+    <div class="columna">
+    <h1>TecnoForms</h1>
+    <p class="ayuda">Elige qué vas a enviar. En la pizarra, uno solo, grande y sin tocar el borde.</p>
+
+    <!-- Qué red se usa: números, letras o dibujos -->
+    <div class="modos" role="group" aria-label="Qué vas a enviar">
+      <button class="modo activo" data-modo="numeros">Números</button>
+      <button class="modo" data-modo="letras">Letras</button>
+      <button class="modo" data-modo="dibujos">Dibujos</button>
+    </div>
+
+    <!-- Pizarra para dibujar con el dedo -->
+    <canvas id="pizarra"></canvas>
+
+    <!-- Botones principales -->
+    <div class="fila">
+      <button id="btnBorrar" class="secundario">Borrar</button>
+      <button id="btnEnviar">Enviar</button>
+    </div>
+
+    <!-- Foto de una hoja: el input está escondido y lo activa el botón -->
+    <button id="btnFoto" class="secundario ancho">Foto de una hoja</button>
+    <input type="file" id="inputFoto" accept="image/*" capture="environment" hidden>
+    <img id="vistaPrevia" alt="Vista previa de la foto" hidden>
+    </div>
+
+    <!-- Columna derecha: red en vivo, respuesta y preguntas -->
+    <div class="columna">
+
+    <!-- Red en vivo: aparece sola después de enviar -->
+    <section id="zonaRed" hidden>
+      <div id="estadoRed">La red está procesando…</div>
+      <canvas id="panel"></canvas>
+    </section>
+
+    <!-- Aquí aparece la respuesta de la red -->
+    <div id="respuesta" aria-live="polite"></div>
+
+    <!-- Preguntas frecuentes -->
+    <section id="zonaPreguntas">
+      <h2>Preguntas frecuentes</h2>
+      <div id="listaPreguntas"></div>
+      <div id="respuestaPregunta" aria-live="polite"></div>
+    </section>
+    </div>
+  </main>
+
+  <!-- config.js va primero, antes del JavaScript de la página -->
+  <script src="../config.js"></script>
+  <script src="preguntas.js"></script>
+  <script src="panel.js"></script>
+  <script src="celular.js"></script>
+</body>
+</html>

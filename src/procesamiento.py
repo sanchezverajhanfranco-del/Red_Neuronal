@@ -35,3 +35,64 @@ def limpiar_foto(foto):
             sin_bordes[mapa == i] = 0
 
     return sin_bordes
+
+
+def sacar_letras(sin_bordes):
+    cantidad, mapa, estadisticas, centros_piezas = cv2.connectedComponentsWithStats(sin_bordes, connectivity=8)
+    cajas = []
+    for i in range(1, cantidad):
+        x, y, ancho_pieza, alto_pieza, area = estadisticas[i]
+        if area >= 20:
+            cajas.append((x, y, ancho_pieza, alto_pieza))
+
+    altura_normal = float(np.median([alto_pieza for x, y, ancho_pieza, alto_pieza in cajas]))
+
+    renglones = []
+    margen = 0.5 * altura_normal
+    for caja in sorted(cajas, key=lambda c: c[1]):
+        x, y, ancho_pieza, alto_pieza = caja
+        if renglones and y <= renglones[-1]["abajo"] + margen:
+            renglones[-1]["cajas"].append(caja)
+            renglones[-1]["abajo"] = max(renglones[-1]["abajo"], y + alto_pieza)
+        else:
+            renglones.append({"arriba": y, "abajo": y + alto_pieza, "cajas": [caja]})
+
+    umbral_espacio = 0.5 * altura_normal
+    for renglon in renglones:
+        letras = sorted(renglon["cajas"], key=lambda c: c[0])
+        palabras = []
+        palabra_actual = []
+        for i in range(len(letras)):
+            letra = letras[i]
+            palabra_actual.append(letra)
+            if i == len(letras) - 1:
+                palabras.append(palabra_actual)
+            else:
+                siguiente = letras[i + 1]
+                distancia = siguiente[0] - (letra[0] + letra[2])
+                if distancia > umbral_espacio:
+                    palabras.append(palabra_actual)
+                    palabra_actual = []
+        renglon["palabras"] = palabras
+
+    texto_letras = []
+    for renglon in renglones:
+        linea = []
+        for palabra in renglon["palabras"]:
+            palabra_28 = []
+            for x, y, ancho_pieza, alto_pieza in palabra:
+                recorte = sin_bordes[y:y + alto_pieza, x:x + ancho_pieza]
+                alto_r, ancho_r = recorte.shape
+                escala = 20 / max(alto_r, ancho_r)
+                nuevo_ancho_r = max(1, int(ancho_r * escala))
+                nuevo_alto_r = max(1, int(alto_r * escala))
+                chico = cv2.resize(recorte, (nuevo_ancho_r, nuevo_alto_r), interpolation=cv2.INTER_AREA)
+                letra_28 = np.zeros((28, 28), np.uint8)
+                arriba = (28 - nuevo_alto_r) // 2
+                izquierda = (28 - nuevo_ancho_r) // 2
+                letra_28[arriba:arriba + nuevo_alto_r, izquierda:izquierda + nuevo_ancho_r] = chico
+                palabra_28.append(letra_28)
+            linea.append(palabra_28)
+        texto_letras.append(linea)
+
+    return texto_letras
