@@ -8,7 +8,7 @@ const PREGUNTAS = [
   },
   {
     pregunta: "¿Qué capas tiene esta red?",
-    respuesta: "Tiene dos capas convolucionales, de 16 y 32 filtros, cada una seguida de una agrupación que reduce la imagen a la mitad. Luego tiene dos capas densas, de 64 y 32 neuronas, con abandono del 25 por ciento durante el entrenamiento, y una capa de salida con 67 neuronas, una por cada clase."
+    respuesta: "Tiene dos capas convolucionales, de 16 y 32 filtros, cada una seguida de una agrupación que reduce la imagen a la mitad. Luego tiene dos capas densas, de 64 y 32 neuronas, con abandono del 25 por ciento durante el entrenamiento, y una capa de salida con una neurona por cada clase: 10 en el modo Números y 67 en los modos Letras y Dibujos."
   },
   {
     pregunta: "¿Qué muestra la animación de la red?",
@@ -16,7 +16,7 @@ const PREGUNTAS = [
   },
   {
     pregunta: "¿Cómo se prepara la imagen antes de entrar a la red?",
-    respuesta: "La imagen se convierte a escala de grises, se corrige la iluminación del fondo y se separa la tinta del papel con el algoritmo K-Means. Después se recorta cada carácter, se escala a 20 por 20 píxeles, se centra en un cuadro de 28 por 28 y sus valores se normalizan entre 0 y 1."
+    respuesta: "La imagen se convierte a escala de grises, se corrige la iluminación del fondo y se separa la tinta del papel con el algoritmo K-Means. Después se recorta cada carácter y se escala: en la pizarra, su lado mayor mide 20 píxeles en números, 24 en letras y 26 en dibujos; en la foto de una hoja mide 20. Luego se centra en un cuadro de 28 por 28 y sus valores se normalizan entre 0 y 1."
   },
   {
     pregunta: "¿Con qué datos se entrenó la red?",
@@ -32,7 +32,7 @@ const PREGUNTAS = [
   },
   {
     pregunta: "¿Por qué a veces dice que no reconoció el dibujo?",
-    respuesta: "La red calcula un porcentaje de seguridad para su respuesta. Si ese porcentaje es menor al 50 por ciento, el sistema no muestra una respuesta inventada y avisa que no pudo reconocer el dibujo."
+    respuesta: "La red calcula un porcentaje de seguridad para su respuesta. Si ese porcentaje es menor al 25 por ciento, el sistema no muestra una respuesta inventada y avisa que no pudo reconocer el dibujo."
   }
 ];
 
