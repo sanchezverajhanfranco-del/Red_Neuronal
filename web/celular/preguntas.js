@@ -16,7 +16,7 @@ const PREGUNTAS = [
   },
   {
     pregunta: "¿Cómo se prepara la imagen antes de entrar a la red?",
-    respuesta: "La imagen se convierte a escala de grises, se corrige la iluminación del fondo y se separa la tinta del papel con el algoritmo K-Means. Después se recorta cada carácter y se escala: en la pizarra, su lado mayor mide 20 píxeles en números, 24 en letras y 26 en dibujos; en la foto de una hoja mide 20. Luego se centra en un cuadro de 28 por 28 y sus valores se normalizan entre 0 y 1."
+    respuesta: "La imagen se convierte a escala de grises, se corrige la iluminación del fondo y se separa la tinta del papel con el algoritmo K-Means. Después se recorta cada carácter y se escala: en la pizarra, su lado mayor mide 20 píxeles en números, 24 en letras y 26 en dibujos; en la foto de una hoja mide 20, salvo en el modo Dibujos, que también usa 26. Luego se centra en un cuadro de 28 por 28 y sus valores se normalizan entre 0 y 1."
   },
   {
     pregunta: "¿Con qué datos se entrenó la red?",
