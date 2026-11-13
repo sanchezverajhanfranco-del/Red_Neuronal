@@ -10,7 +10,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from red import cargar_red, activaciones
-from procesamiento import limpiar_foto, sacar_letras
+from procesamiento import limpiar_foto, sacar_letras, limpiar_dibujo
 
 Carpeta_Proyecto = Path(__file__).parent.parent
 Carpeta_modelos = Carpeta_Proyecto / "modelos"
@@ -252,7 +252,7 @@ def armar_texto(texto_letras, elegidas, nombres):
 
 def leer_hoja(sin_bordes, modo):
     if modo == "dibujos":
-        return leer_dibujo(sin_bordes, modo)
+        return leer_dibujo(limpiar_dibujo(sin_bordes), modo)
 
     sin_bordes = quitar_ruido(sin_bordes)
     try:
