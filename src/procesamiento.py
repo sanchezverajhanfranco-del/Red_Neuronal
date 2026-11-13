@@ -37,13 +37,13 @@ def limpiar_foto(foto):
     return sin_bordes
 
 
-def engrosar(recorte):
+def engrosar(recorte, proporcion=0.12):
     lado_mayor = max(recorte.shape)
     distancia = cv2.distanceTransform((recorte > 0).astype(np.uint8), cv2.DIST_L2, 3)
     if distancia.max() == 0:
         return recorte
     grosor = 2 * np.percentile(distancia[distancia > 0], 90)
-    falta = int(round(0.12 * lado_mayor - grosor))
+    falta = int(round(proporcion * lado_mayor - grosor))
     if falta <= 0:
         return recorte
     recorte = cv2.copyMakeBorder(recorte, falta, falta, falta, falta, cv2.BORDER_CONSTANT, value=0)
@@ -151,3 +151,18 @@ def sacar_letras(sin_bordes):
         texto_letras.append(linea)
 
     return texto_letras
+
+
+def limpiar_dibujo(sin_bordes):
+    cantidad, mapa, estadisticas, _ = cv2.connectedComponentsWithStats(sin_bordes, connectivity=8)
+    if cantidad <= 1:
+        return sin_bordes
+    areas = estadisticas[1:, cv2.CC_STAT_AREA]
+    area_grande = areas.max()
+    limpio = np.zeros_like(sin_bordes)
+    for i in range(1, cantidad):
+        if estadisticas[i, cv2.CC_STAT_AREA] >= 0.05 * area_grande:
+            limpio[mapa == i] = 255
+    filas, columnas = np.where(limpio > 0)
+    recorte = limpio[filas.min():filas.max() + 1, columnas.min():columnas.max() + 1]
+    return engrosar(recorte, proporcion=0.08)
